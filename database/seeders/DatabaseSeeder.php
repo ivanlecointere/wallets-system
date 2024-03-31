@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
         ])->assignRole('client');
 
         BankAccount::factory(30)
+            ->hasAddress(1)
             ->create();
     }
 }
