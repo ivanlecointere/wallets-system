@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Enums\UserType;
+use App\Models\BankAccount;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -23,9 +25,15 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@admin.com',
         ])->assignRole('admin');
 
-        User::factory()->create([
+        User::factory()
+            ->has(BankAccount::factory())
+            ->create([
             'name' => 'Client',
             'email' => 'client@client.com',
+            'type' => UserType::NATURAL->value,
         ])->assignRole('client');
+
+        BankAccount::factory(30)
+            ->create();
     }
 }
