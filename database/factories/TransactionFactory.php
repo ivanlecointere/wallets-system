@@ -19,7 +19,7 @@ class TransactionFactory extends Factory
     {
         return [
             'type' => $this->faker->randomElement(array_column(TransactionType::cases(), 'value')),
-            'amount' => $this->faker->numberBetween(10000000, 200000000),
+            'amount' => $this->faker->numberBetween(100000, 2000000),
         ];
     }
 }
