@@ -123,4 +123,7 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'wallets_api_key' => env('WALLETS_API_KEY', 'BLUESOFT_TEST'),
+
+    'currency' => env('CURRENCY', 'USD'),
 ];
