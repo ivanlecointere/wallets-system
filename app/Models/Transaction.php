@@ -2,26 +2,24 @@
 
 namespace App\Models;
 
-use App\Enums\BankAccountType;
+use App\Enums\TransactionType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
-class BankAccount extends Model
+class Transaction extends Model
 {
     use HasFactory;
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<string>
+     * @var array<int, string>
      */
     protected $fillable = [
-        'user_id',
-        'account_number',
+        'bank_account_id',
         'type',
+        'amount',
     ];
 
     /**
@@ -32,18 +30,8 @@ class BankAccount extends Model
     protected function casts(): array
     {
         return [
-            'type' => BankAccountType::class,
+            'type' => TransactionType::class,
         ];
-    }
-
-    /**
-     * Returns the client that the account belongs to
-     *
-     * @return BelongsTo
-     */
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
     }
 
     /**
@@ -54,14 +42,5 @@ class BankAccount extends Model
     public function address(): MorphOne
     {
         return $this->morphOne(Address::class, 'addressable');
-    }
-
-    /**
-     * Returns the transactions tha belongs to this account
-     * @return HasMany
-     */
-    public function transactions(): HasMany
-    {
-        return $this->hasMany(Transaction::class);
     }
 }
