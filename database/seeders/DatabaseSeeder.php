@@ -26,11 +26,13 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin User',
             'email' => 'admin@admin.com',
             'type' => UserType::NATURAL->value,
+            'password' => '$2y$10$FdoXV.iGdbt.ssD3qJqjQ.1F1UGP1vZvvoMyx7qNrlLjYYh2z1D.O', // 12345678
         ])->assignRole('admin');
 
         User::factory()
             ->has(
                 BankAccount::factory()
+                    ->state(['account_number' => '0000-0000-0000-0000'])
                     ->hasAddress(1)
                     ->has(
                         Transaction::factory()
@@ -40,10 +42,11 @@ class DatabaseSeeder extends Seeder
                     )
             )
             ->create([
-            'name' => 'Client',
-            'email' => 'client@client.com',
-            'type' => UserType::NATURAL->value,
-        ])->assignRole('client');
+                'name' => 'Client',
+                'email' => 'client@client.com',
+                'type' => UserType::NATURAL->value,
+                'password' => '$2y$10$FdoXV.iGdbt.ssD3qJqjQ.1F1UGP1vZvvoMyx7qNrlLjYYh2z1D.O', // 12345678
+            ])->assignRole('client');
 
         BankAccount::factory(30)
             ->hasAddress(1)
