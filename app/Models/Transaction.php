@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use App\Enums\TransactionType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -22,6 +23,13 @@ class Transaction extends Model
         'type',
         'amount',
     ];
+
+    /**
+     * The attributes that must be appended
+     *
+     * @var string[]
+     */
+    protected $appends = ['formatted_amount'];
 
     /**
      * Get the attributes that should be cast.
@@ -56,5 +64,30 @@ class Transaction extends Model
             get: fn ($value) => $value / 100,
             set: fn ($value) => $value * 100
         );
+    }
+
+    /**
+     * Returns formatted amount string
+     *
+     * @return string
+     */
+    public function getFormattedAmountAttribute(): string
+    {
+        return number_format($this->amount, 2);
+    }
+
+    /**
+     * Scope a query by date range
+     *
+     * @param Builder $query
+     * @param string|null $from
+     * @param string|null $to
+     * @return Builder
+     */
+    public function scopeByDateRange(Builder $query, ?string $from, ?string $to): Builder
+    {
+        return $from && $to ? $query
+            ->where('created_at', '>', $from)
+            ->where('created_at', '<', $to) : $query;
     }
 }

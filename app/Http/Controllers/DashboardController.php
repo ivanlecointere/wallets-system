@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BankAccount;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -11,9 +11,10 @@ class DashboardController extends Controller
     /**
      * Handle the incoming request.
      *
+     * @param Request $request
      * @return Response
      */
-    public function __invoke(): Response
+    public function __invoke(Request $request): Response
     {
         if (auth()->user()->hasRole('admin')) {
             return Inertia::render('AdminDashboard');
@@ -21,7 +22,10 @@ class DashboardController extends Controller
 
         return Inertia::render('Dashboard', [
             'account' => $account = auth()->user()->bankAccount->append('balance'),
-            'transactions' => $account->transactions()->orderBy('created_at', 'DESC')->paginate(20),
+            'currency' => config('app.currency'),
+            'transactions' => $account->transactions()->with('address')->orderBy('created_at', 'DESC')->byDateRange($request->range_from, $request->range_to)->paginate(10),
+            'incomes' => $account->calculateIncomeByRange($request->range_from, $request->range_to),
+            'expenses' => $account->calculateExpensesByRange($request->range_from, $request->range_to),
         ]);
     }
 }
