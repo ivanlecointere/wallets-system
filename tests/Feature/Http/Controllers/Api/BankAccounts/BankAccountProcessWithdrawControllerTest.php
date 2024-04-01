@@ -21,7 +21,13 @@ beforeEach(function () {
 });
 
 it('withdraws returns 403 when api_key is not passed', function () {
-    postJson("/api/bank-account/{$this->account->account_number}/withdraw", ['amount' => $amount = rand(100000, 1000000)])
+    postJson("/api/bank-account/{$this->account->account_number}/withdraw", ['amount' => rand(100000, 1000000)])
+        ->assertStatus(403);
+});
+
+it('withdraws returns 403 when api_key is wrong', function () {
+    withHeader('X-API-KEY', 'WRONG_KEY')
+        ->postJson("/api/bank-account/{$this->account->account_number}/withdraw", ['amount' => rand(100000, 1000000)])
         ->assertStatus(403);
 });
 
