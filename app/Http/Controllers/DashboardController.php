@@ -19,10 +19,8 @@ class DashboardController extends Controller
             return Inertia::render('AdminDashboard');
         }
 
-        $account = auth()->user()->bankAccount->append('balance');
-
         return Inertia::render('Dashboard', [
-            'account' => $account,
+            'account' => $account = auth()->user()->bankAccount->append('balance'),
             'transactions' => $account->transactions()->orderBy('created_at', 'DESC')->paginate(20),
         ]);
     }
