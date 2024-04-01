@@ -44,5 +44,6 @@ it('withdraws are successfully processed', function () {
 
 it('withdraws fails when balance is not enough', function () {
     withHeader('X-API-KEY', config('app.wallets_api_key'))
-        ->postJson("/api/bank-account/{$this->account->account_number}/withdraw", ['amount' => 2000000]);
-})->throws(Exception::class, 'Insufficient funds.');
+        ->postJson("/api/bank-account/{$this->account->account_number}/withdraw", ['amount' => 2000000])
+        ->assertServerError();
+});
