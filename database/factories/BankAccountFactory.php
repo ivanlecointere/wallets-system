@@ -20,7 +20,7 @@ class BankAccountFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(),
+            'user_id' => User::factory()->create()->assignRole('client'),
             'account_number' => $this->faker->numerify('####-####-####-####'),
             'type' => function (array $attributes) {
                 return User::find($attributes['user_id'])->type === UserType::NATURAL ?
