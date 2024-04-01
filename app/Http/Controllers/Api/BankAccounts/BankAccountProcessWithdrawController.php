@@ -8,14 +8,19 @@ use App\Http\Requests\BankAccounts\BankAccountProcessTransaction;
 use App\Models\Address;
 use App\Models\BankAccount;
 use App\Models\Transaction;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
 class BankAccountProcessWithdrawController extends Controller
 {
     /**
      * Handle the incoming request.
+     *
+     * @param BankAccountProcessTransaction $request
+     * @param BankAccount $bankAccount
+     * @return JsonResponse
      */
-    public function __invoke(BankAccountProcessTransaction $request, BankAccount $bankAccount)
+    public function __invoke(BankAccountProcessTransaction $request, BankAccount $bankAccount): JsonResponse
     {
         DB::transaction(function() use($bankAccount, $request){
             $depositsTotal = Transaction::where([
