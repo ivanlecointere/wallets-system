@@ -4,7 +4,7 @@ namespace App\Http\Requests\BankAccounts;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BankAccountProcessWithdrawRequest extends FormRequest
+class BankAccountProcessTransaction extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\BankAccounts;
 
 use App\Enums\TransactionType;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\BankAccounts\BankAccountProcessWithdrawRequest;
+use App\Http\Requests\BankAccounts\BankAccountProcessTransaction;
 use App\Models\Address;
 use App\Models\BankAccount;
 use App\Models\Transaction;
@@ -15,7 +15,7 @@ class BankAccountProcessWithdrawController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(BankAccountProcessWithdrawRequest $request, BankAccount $bankAccount)
+    public function __invoke(BankAccountProcessTransaction $request, BankAccount $bankAccount)
     {
         DB::transaction(function() use($bankAccount, $request){
             $depositsTotal = Transaction::where([
