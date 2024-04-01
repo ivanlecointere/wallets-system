@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BankAccount;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -18,6 +19,11 @@ class DashboardController extends Controller
             return Inertia::render('AdminDashboard');
         }
 
-        return Inertia::render('Dashboard');
+        $account = auth()->user()->bankAccount->append('balance');
+
+        return Inertia::render('Dashboard', [
+            'account' => $account,
+            'transactions' => $account->transactions()->orderBy('created_at', 'DESC')->paginate(20),
+        ]);
     }
 }
