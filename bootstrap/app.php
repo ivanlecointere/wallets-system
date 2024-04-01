@@ -16,6 +16,9 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
         ]);
 
+        $middleware->alias([
+            'with_wallets_api_key' => \App\Http\Middleware\VerifyWalletsApiKey::class,
+        ]);
         //
     })
     ->withExceptions(function (Exceptions $exceptions) {
