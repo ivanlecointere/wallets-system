@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\BankAccountType;
+use App\Enums\TransactionType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -63,5 +64,16 @@ class BankAccount extends Model
     public function transactions(): HasMany
     {
         return $this->hasMany(Transaction::class);
+    }
+
+    /**
+     * Returns the accounts' balance based on transactions difference
+     *
+     * @return float
+     */
+    public function getBalanceAttribute(): float
+    {
+        return ($this->transactions()->where('type', TransactionType::DEPOSIT->value)->sum('amount') -
+            $this->transactions()->where('type', TransactionType::WITHDRAW->value)->sum('amount')) / 100;
     }
 }
